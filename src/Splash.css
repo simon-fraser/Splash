@@ -1,0 +1,8 @@
+.pageWrapper {
+    background-image: url(https://images.unsplash.com/photo-1531951286638-d1b6cdae30c9?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=78d69f6595028931f9b88466dcd54ca9&auto=format&fit=crop&w=2800&q=80);
+    background-size: cover;
+    display: flex;
+    flex: 1 0 auto;
+    width: 100vw;
+    height: 100vh;
+}
