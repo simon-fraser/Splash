@@ -11,7 +11,7 @@ Built with React v16.4 and I used Guppy[[^]](https://github.com/joshwcomeau/gupp
 The page gets its data from a couple of third party feeds listed below
 
 - [unsplash.com](https://source.unsplash.com) (Wallpaper image)
-- [quotes.rest](https://quotes.rest/) (Inspirational quote)
+- [favqs.com](https://favqs.com/api) (Inspirational quote)
 - [openweathermap.org](https://openweathermap.org/) (Current weather feed)
 
 ### Other Stuff
@@ -25,4 +25,4 @@ I am also using browser geolocation to get users current position to pass onto t
 - Time?
 - Settings (Could ask for name to personalise the experiance)
     - Favourite links
-- Quote Feed (limited to 10 requests/per hour)
+- ~~Quote Feed (limited to 10 requests/per hour)~~

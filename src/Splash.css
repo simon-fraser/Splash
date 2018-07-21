@@ -42,12 +42,38 @@
     z-index: 111;
 }
 
+.search {
+    padding-top: 6%;
+    display: flex;
+    justify-content: center;
+}
+.search-input {
+    background: rgba(255,255,255,0.3);
+    border: 0;
+    border-radius: 14px;
+    padding: 4px 8px 6px;
+    min-width: 280px;
+    color: #fff;
+}
+.search-input::placeholder {
+    color: #333;
+}
+.search-button {
+    /* <div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> */
+    border: none;
+    background: none;
+    margin-left: -32px;
+}
+.search-button img {
+    width: 16px;
+}
+
 .weather {
     display: flex;
     flex: 0 0 auto;
     flex-wrap: wrap;
     width: 100%;
-    padding-top: 15%;
+    padding-top: 6%;
     justify-content: center;
 }
 .weather-icon-box {
@@ -81,15 +107,21 @@
 
 .quotebox {
     bottom: 0;
-    display: block;
+    display: flex;
     font-size: 0.85em;
+    justify-content: center;
     left: 0;
     position: absolute;
     right: 0;
-    width: 100%;
     text-align: center;
+    width: 100%;
 }
-.quote { }
+.quotebox footer {
+    font-style: italic;
+}
+.quote {
+    width: 66%;
+}
 .quote p {
     margin-bottom: 0.6em;
 }

@@ -15,14 +15,24 @@ class Weather extends React.Component {
             return output;
         }
 
+        // 
+        const icon = () => {
+            let icon = this.props.weather.weather[0].icon;
+            let replace = icon.replace('d','').replace('n','');
+
+            return replace;
+        }
+
+        // Wind direction symbol with rotation
         const direction = () => {
             let degrees = this.props.weather.wind.deg;
             let rotate = (degrees - 45);
             let transform = `rotate(${rotate}deg)`;
             
-            return <img src="/weather/direction.svg" alt={`wind direction ${degrees}`} className="weather-wind" style={{ transform: transform}} />
+            return <img src={`${process.env.PUBLIC_URL}/weather/direction.svg`} alt={`wind direction ${degrees}`} className="weather-wind" style={{ transform: transform}} />
         }
 
+        // Windspeed calc to MPH
         const windspeed = () => {
             let metersSpeed = this.props.weather.wind.speed;
             let tomph = 2.2369;
@@ -33,7 +43,7 @@ class Weather extends React.Component {
         if(this.props.weather == null) return null;
 
         return <div className="weather">
-            <figure className="weather-icon-box"><img src={`/weather/${this.props.weather.weather[0].icon}.svg`} alt={this.props.weather.weather[0].description} className="weather-icon" /></figure>
+            <figure className="weather-icon-box"><img src={`${process.env.PUBLIC_URL}/weather/${icon()}.svg`} alt={this.props.weather.weather[0].description} className="weather-icon" /></figure>
             <p className="weather-text">{description()}</p>
 
             <div className="weather-suplimentary">

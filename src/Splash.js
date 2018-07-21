@@ -31,7 +31,7 @@ class Splash extends React.Component {
         } else {
             // Run all the commands to generate splash page
             Promise.all([this.getBackground(), this.getWeather(), this.getQuote()]).then(responses => {
-                _.setState({ 
+                _.setState({
                     background: responses[0],
                     weather: responses[1],
                     quote: responses[2],
@@ -66,7 +66,12 @@ class Splash extends React.Component {
 
     // Query QuotesAPI for a nice quote
     getQuote = () => {
-        return axios.get('https://favqs.com/api/qotd')
+        return axios.get(
+            'https://favqs.com/api/qotd',
+            {
+                timeout: 1500
+            }
+        )
         .then(function (response) {
             if(response.status === 200) {
                 if(typeof response.data.quote !== 'undefined') {
@@ -85,6 +90,7 @@ class Splash extends React.Component {
                 return axios.get(
                     'https://api.openweathermap.org/data/2.5/weather',
                     {
+                        timeout: 1000,
                         params: {
                             lat: resolve.coords.latitude,
                             lon: resolve.coords.longitude,
@@ -105,17 +111,27 @@ class Splash extends React.Component {
     // Combine and display our splash
     render() {
         return <React.Fragment>
-            { (this.state.loaded)?
+            { (this.state.loaded) ?
                 <div className="lander" style={{ backgroundImage: `url(${this.state.background})` }}>
                     
                     <div className="container">
+
+                        <div className="search">
+                            <form method="GET" action="https://www.google.co.uk/search">
+                                <input className="search-input" type="search" name="q" placeholder="Search now..." ref="searchnow" autoFocus />
+                                <button type="submit" className="search-button">
+                                    <img src={`${process.env.PUBLIC_URL}/search.svg`} alt="search" />
+                                </button>
+                            </form>
+                        </div>
+
                         <Weather weather={this.state.weather} />
                         <Quote quote={this.state.quote} />
                     </div>
 
                 </div>
             :
-                <div className="loading"><img src="/rolling.svg" alt="Loading" /></div> 
+                <div className="loading"><img src={`${process.env.PUBLIC_URL}/rolling.svg`} alt="Loading" /></div> 
             }
         </React.Fragment>
     }
