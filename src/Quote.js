@@ -7,7 +7,7 @@ class Quote extends React.Component {
 
         return <div className="quotebox">
             <blockquote className="quote">
-                <p>{this.props.quote.quote}</p>
+                <p>{this.props.quote.body}</p>
                 <footer>{this.props.quote.author}</footer>
             </blockquote>
         </div>

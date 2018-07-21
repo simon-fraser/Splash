@@ -20,13 +20,13 @@ class Splash extends React.Component {
     // Run these before Mounting!
     componentWillMount() {
         const _ = this;
-        const hours = 6;
+        const hours = 8;
         const now = new Date().getTime();
         const localstate = localStorage.getItem('splash$state');
         const setuptime = localStorage.getItem('splash$setup');
         
         // If storage load state from previous storage!
-        if(localstate && setuptime && (now-setuptime) < (hours*60*60*1000)) {
+        if((localstate && setuptime) && ((now - setuptime) < (hours*60*60*1000))) {
             this.setState(JSON.parse(localstate));
         } else {
             // Run all the commands to generate splash page
@@ -56,9 +56,9 @@ class Splash extends React.Component {
 
     // Query UnSplash for a nice background
     getBackground = () => {
-        return axios.get('https://source.unsplash.com/random/1920x1080?cool,happy,nature,technology,travel,water')
+        return axios.get('https://source.unsplash.com/random/1920x1080')
         .then(function (response) {
-            if (response.status === 200) return response.request.responseURL;
+            if(response.status === 200) return response.request.responseURL;
             return {'error': 'no response'};
         })
         .catch(function (error) { return {'error': error} });
@@ -66,11 +66,11 @@ class Splash extends React.Component {
 
     // Query QuotesAPI for a nice quote
     getQuote = () => {
-        return axios.get('https://quotes.rest/qod.json')
+        return axios.get('https://favqs.com/api/qotd')
         .then(function (response) {
-            if (response.status === 200) {
-                if (typeof response.data.contents.quotes[0] !== 'undefined') {
-                    return response.data.contents.quotes[0];
+            if(response.status === 200) {
+                if(typeof response.data.quote !== 'undefined') {
+                    return response.data.quote;
                 }
             }
             return {'error': 'no response'};
@@ -81,7 +81,7 @@ class Splash extends React.Component {
     // Query AccuWeather for local weather update
     getWeather = () => {
         return this.getCoordinates().then(function(resolve) {
-            if (resolve.coords) {
+            if(resolve.coords) {
                 return axios.get(
                     'https://api.openweathermap.org/data/2.5/weather',
                     {
@@ -94,7 +94,7 @@ class Splash extends React.Component {
                     }
                 )
                 .then(function (response) {
-                    if (response.status === 200) return response.data;
+                    if(response.status === 200) return response.data;
                     return {'error': 'no response'};
                 })
                 .catch(function (error) { return {'error': error} });
