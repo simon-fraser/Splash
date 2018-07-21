@@ -23,6 +23,13 @@ class Weather extends React.Component {
             return <img src="/weather/direction.svg" alt={`wind direction ${degrees}`} className="weather-wind" style={{ transform: transform}} />
         }
 
+        const windspeed = () => {
+            let metersSpeed = this.props.weather.wind.speed;
+            let tomph = 2.2369;
+
+            return Math.round((metersSpeed * tomph));
+        }
+
         if(this.props.weather == null) return null;
 
         return <div className="weather">
@@ -30,8 +37,8 @@ class Weather extends React.Component {
             <p className="weather-text">{description()}</p>
 
             <div className="weather-suplimentary">
-                <p className="weather-temp">Feels like {Math.round(this.props.weather.main.temp)}&#176;C</p>
-                <div>{direction()} {Math.round(this.props.weather.wind.speed)} m/s</div>
+                <p className="weather-temp">{Math.round(this.props.weather.main.temp)}&#176;C</p>
+                <div>{direction()} {windspeed()} mph</div>
             </div>
         </div>
     }
