@@ -21,7 +21,7 @@ I am also using browser geolocation to get users current position to pass onto t
 
 ### Todo
 
-- Custom search tool -> Google
+- ~~Custom search tool -> Google~~
 - Time?
 - Settings (Could ask for name to personalise the experiance)
     - Favourite links
