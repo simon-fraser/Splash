@@ -45,7 +45,7 @@ class Weather extends React.Component {
         return <div className="weather">
             <figure className="weather-icon-box"><img src={`${process.env.PUBLIC_URL}/weather/${icon()}.svg`} alt={this.props.weather.weather[0].description} className="weather-icon" /></figure>
             <p className="weather-text">{description()}</p>
-
+            <p className="weather-place">{this.props.weather.name}</p>
             <div className="weather-suplimentary">
                 <p className="weather-temp">{Math.round(this.props.weather.main.temp)}&#176;C</p>
                 <div>{direction()} {windspeed()} mph</div>

@@ -20,7 +20,7 @@ class Splash extends React.Component {
     // Run these before Mounting!
     componentWillMount() {
         const _ = this;
-        const hours = 8;
+        const hours = 6;
         const now = new Date().getTime();
         const localstate = localStorage.getItem('splash$state');
         const setuptime = localStorage.getItem('splash$setup');
@@ -41,6 +41,7 @@ class Splash extends React.Component {
                 localStorage.setItem('splash$setup', now);
             });
         }
+        
     }
 
     // Get coordinates from browser
