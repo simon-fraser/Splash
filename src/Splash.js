@@ -1,9 +1,12 @@
 import React  from 'react';
 import axios from 'axios';
+import Search from './Search';
 import Weather from './Weather';
-import Quote from './Quote';
 import { OPEN_WEATHER_KEY } from './env';
 import './Splash.css';
+
+/* eslint-disable no-restricted-globals */
+// Required for screen width
 
 class Splash extends React.Component {
     constructor(props, context) {
@@ -30,11 +33,11 @@ class Splash extends React.Component {
             this.setState(JSON.parse(localstate));
         } else {
             // Run all the commands to generate splash page
-            Promise.all([this.getBackground(), this.getWeather(), this.getQuote()]).then(responses => {
+            Promise.all([this.getBackground(), this.getWeather()]).then(responses => {
                 _.setState({
                     background: responses[0],
                     weather: responses[1],
-                    quote: responses[2],
+                    // quote: responses[2],
                     loaded: true
                 });
                 localStorage.setItem('splash$state', JSON.stringify(this.state));
@@ -57,28 +60,21 @@ class Splash extends React.Component {
 
     // Query UnSplash for a nice background
     getBackground = () => {
-        return axios.get('https://source.unsplash.com/random/1920x1080')
+        // Get best resolution based on screen
+        let screenWidth = screen.width;
+        let resolution = [];
+        resolution[0] = screenWidth;
+        resolution[1] = (screenWidth / 1.6);
+        // High Quality Multiplier
+        if(window.devicePixelRatio > 1) {
+            resolution[0] = (resolution[0]*2)
+            resolution[1] = (resolution[1]*2)
+        }
+        let srcResolution = resolution.join('x');
+
+        return axios.get('https://source.unsplash.com/random/' + srcResolution)
         .then(function (response) {
             if(response.status === 200) return response.request.responseURL;
-            return {'error': 'no response'};
-        })
-        .catch(function (error) { return {'error': error} });
-    }
-
-    // Query QuotesAPI for a nice quote
-    getQuote = () => {
-        return axios.get(
-            'https://favqs.com/api/qotd',
-            {
-                timeout: 1500
-            }
-        )
-        .then(function (response) {
-            if(response.status === 200) {
-                if(typeof response.data.quote !== 'undefined') {
-                    return response.data.quote;
-                }
-            }
             return {'error': 'no response'};
         })
         .catch(function (error) { return {'error': error} });
@@ -116,18 +112,8 @@ class Splash extends React.Component {
                 <div className="lander" style={{ backgroundImage: `url(${this.state.background})` }}>
                     
                     <div className="container">
-
-                        <div className="search">
-                            <form method="GET" action="https://www.google.co.uk/search">
-                                <input className="search-input" type="search" name="q" placeholder="Search now..." ref="searchnow" autoFocus />
-                                <button type="submit" className="search-button">
-                                    <img src={`${process.env.PUBLIC_URL}/search.svg`} alt="search" />
-                                </button>
-                            </form>
-                        </div>
-
+                        <Search />
                         <Weather weather={this.state.weather} />
-                        <Quote quote={this.state.quote} />
                     </div>
 
                 </div>

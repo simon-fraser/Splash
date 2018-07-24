@@ -1,4 +1,5 @@
 import React from 'react';
+import './Weather.css'
 
 class Weather extends React.Component {
 
@@ -23,33 +24,15 @@ class Weather extends React.Component {
             return replace;
         }
 
-        // Wind direction symbol with rotation
-        const direction = () => {
-            let degrees = this.props.weather.wind.deg;
-            let rotate = (degrees - 45);
-            let transform = `rotate(${rotate}deg)`;
-            
-            return <img src={`${process.env.PUBLIC_URL}/weather/direction.svg`} alt={`wind direction ${degrees}`} className="weather-wind" style={{ transform: transform}} />
-        }
-
-        // Windspeed calc to MPH
-        const windspeed = () => {
-            let metersSpeed = this.props.weather.wind.speed;
-            let tomph = 2.2369;
-
-            return Math.round((metersSpeed * tomph));
-        }
-
         if(this.props.weather == null) return null;
 
         return <div className="weather">
-            <figure className="weather-icon-box"><img src={`${process.env.PUBLIC_URL}/weather/${icon()}.svg`} alt={this.props.weather.weather[0].description} className="weather-icon" /></figure>
-            <p className="weather-text">{description()}</p>
-            <p className="weather-place">{this.props.weather.name}</p>
-            <div className="weather-suplimentary">
-                <p className="weather-temp">{Math.round(this.props.weather.main.temp)}&#176;C</p>
-                <div>{direction()} {windspeed()} mph</div>
+            <div className="weather-detail">
+                <span className="weather-desc">{description()}</span>
+                <span className="weather-temp">{Math.round(this.props.weather.main.temp)}<span className="c">&#176;C</span></span>
             </div>
+            <figure className="weather-icon" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/weather/${icon()}.svg)` }}></figure>
+            <span className="weather-area">{this.props.weather.name}</span>
         </div>
     }
 }
