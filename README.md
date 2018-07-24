@@ -28,4 +28,4 @@ I am also using browser geolocation to get users current position to pass onto t
 
 ### Updates
 
-1.1	(24/07) Style updated, weather moved to corner location and increased size and prominance of search, removed quote feed; mostly due to performance issues and it returing approx 50% of the time.
+1.1	(24/07) Style updated, weather moved to corner location and increased size and prominence of search, removed quote feed; mostly due to performance issues and it returning approx. 50% of the time.
