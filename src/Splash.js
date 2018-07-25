@@ -2,6 +2,7 @@ import React  from 'react';
 import axios from 'axios';
 import Search from './Search';
 import Weather from './Weather';
+import base64Img from 'base64-img-promise';
 import { OPEN_WEATHER_KEY } from './env';
 import './Splash.css';
 
@@ -14,8 +15,8 @@ class Splash extends React.Component {
 
         this.state = {
             loaded: false,
+            backgroundSize: null,
             background: null,
-            quote: null,
             weather: null
         }
     }
@@ -27,39 +28,7 @@ class Splash extends React.Component {
         const now = new Date().getTime();
         const localstate = localStorage.getItem('splash$state');
         const setuptime = localStorage.getItem('splash$setup');
-        
-        // If storage load state from previous storage!
-        if((localstate && setuptime) && ((now - setuptime) < (hours*60*60*1000))) {
-            this.setState(JSON.parse(localstate));
-        } else {
-            // Run all the commands to generate splash page
-            Promise.all([this.getBackground(), this.getWeather()]).then(responses => {
-                _.setState({
-                    background: responses[0],
-                    weather: responses[1],
-                    // quote: responses[2],
-                    loaded: true
-                });
-                localStorage.setItem('splash$state', JSON.stringify(this.state));
-                localStorage.setItem('splash$setup', now);
-            });
-        }
-        
-    }
 
-    // Get coordinates from browser
-    getCoordinates = () => {
-        const options = {
-            enableHighAccuracy: true,
-            maximumAge: 0
-        }
-        return new Promise(function (resolve, reject) {
-            navigator.geolocation.getCurrentPosition(resolve, reject, options);
-        });
-    }
-
-    // Query UnSplash for a nice background
-    getBackground = () => {
         // Get best resolution based on screen
         let screenWidth = screen.width;
         let resolution = [];
@@ -70,9 +39,50 @@ class Splash extends React.Component {
             resolution[0] = (resolution[0]*2)
             resolution[1] = (resolution[1]*2)
         }
-        let srcResolution = resolution.join('x');
+        this.setState({ backgroundSize: resolution.join('x') })
+        
+        // If storage load state from previous storage!
+        if((localstate && setuptime) && ((now - setuptime) < (hours*60*60*1000))) {
+            this.setState(JSON.parse(localstate));
+        } else {
+            // Run all the commands to generate splash page
+            Promise.all([this.getWeather(), this.get64Background()]).then(responses => {
+                _.setState({
+                    weather: responses[0],
+                    background: responses[1],
+                    loaded: true
+                });
+                localStorage.setItem('splash$state', JSON.stringify(this.state))
+                localStorage.setItem('splash$setup', now)
+            });
+        }
+        
+    }
 
-        return axios.get('https://source.unsplash.com/random/' + srcResolution)
+    // Get coordinates from browser
+    getCoordinates() {
+        const options = {
+            enableHighAccuracy: true,
+            maximumAge: 0
+        }
+        return new Promise(function (resolve, reject) {
+            navigator.geolocation.getCurrentPosition(resolve, reject, options);
+        });
+    }
+
+    // Query UnSplash for a nice background, return as a base64 image string
+    get64Background() {
+        return base64Img.requestBase64('https://source.unsplash.com/random/' + this.state.backgroundSize)
+        .then(function({res, data}) {
+            return data
+        })
+        .catch(function (error) { return {'error': error} });
+    }
+
+    // Query UnSplash for a nice background
+    getBackground() {
+
+        return axios.get('https://source.unsplash.com/random/' + this.state.backgroundSize)
         .then(function (response) {
             if(response.status === 200) return response.request.responseURL;
             return {'error': 'no response'};
@@ -81,7 +91,7 @@ class Splash extends React.Component {
     }
 
     // Query AccuWeather for local weather update
-    getWeather = () => {
+    getWeather() {
         return this.getCoordinates().then(function(resolve) {
             if(resolve.coords) {
                 return axios.get(
