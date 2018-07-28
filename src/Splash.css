@@ -6,10 +6,16 @@
     justify-content: center;
     align-content: center;
 }
-.loading img {
-    width: 120px;
+.loading img { width: 120px; }
+.container {
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    height: 100vh;
+    width: 100vw;
+    z-index: 111;
 }
-
 .lander {
     background-position: center;
     background-size: cover;
@@ -20,7 +26,6 @@
     width: 100vw;
     z-index: 1;
 }
-
 .lander:after {
     background: linear-gradient(180deg, rgba(51, 51, 51, 0.10) 0%, rgba(72, 75, 78, 0.6) 80%);
     bottom: 0;
@@ -30,14 +35,4 @@
     right: 0;
     top: 0;
     z-index: 11;
-}
-
-.container {
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    flex: 1 0 auto;
-    height: 100vh;
-    width: 100vw;
-    z-index: 111;
 }

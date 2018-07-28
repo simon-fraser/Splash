@@ -1,7 +1,7 @@
 body {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: 'Proxima Nova Rg', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
-
-*:focus {
-  outline: none;
-}
+*:focus { outline: none; }
+input { color: var(--font-color); }
+input::placeholder,
+input::-moz-placeholder { color: var(--font-color); }
