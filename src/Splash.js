@@ -1,5 +1,4 @@
 import React  from 'react';
-import base64Img from 'base64-img-promise';
 import Search from './Search';
 import Weather from './Weather';
 import { OPEN_WEATHER_KEY } from './env';
@@ -51,7 +50,7 @@ class Splash extends React.Component {
             this.setState(JSON.parse(localstate));
         } else {
             // Run all the commands to generate splash page
-            Promise.all([this.getWeather(), this.get64Background()]).then(responses => {
+            Promise.all([this.getWeather(), this.getBackground()]).then(responses => {
                 _.setState({
                     weather: responses[0],
                     background: responses[1],
@@ -69,19 +68,18 @@ class Splash extends React.Component {
             enableHighAccuracy: true,
             maximumAge: 0
         }
-
         return new Promise(function (resolve, reject) {
             navigator.geolocation.getCurrentPosition(resolve, reject, options);
         });
     }
 
-    // Query UnSplash for a nice background, return as a base64 image string
-    get64Background() {
-        return base64Img.requestBase64(`https://source.unsplash.com/random/${this.state.backgroundSize}`)
-        .then(function({res, data}) {
-            return data
+    // Query UnSplash for a nice background
+    getBackground() {
+        return fetch(`https://source.unsplash.com/random/${this.state.backgroundSize}`)
+        .then(blob => {
+            if(blob.status === 200) return blob.url
         })
-        .catch(function (error) { return {'error': error} });
+        .catch(error => { return {'error': error} });
     }
 
     // Query AccuWeather for local weather update
@@ -92,8 +90,8 @@ class Splash extends React.Component {
                 .then(blob => {
                     if(blob.status === 200) return blob.json()
                 })
-                .then(data => {return data})
-                .catch(function (error) { return {'error': error} });
+                .then(data => { return data })
+                .catch(error => { return {'error': error} });
             }
         });
     }
